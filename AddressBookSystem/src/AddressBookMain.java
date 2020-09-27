@@ -12,7 +12,7 @@ public class AddressBookMain {
 
 	// list to store contacts
 	private LinkedList<Contact> bookList;
-	private Map<String, Contact> bookMap;
+	//private Map<String, Contact> bookMap;
 
 	// constructor of addressbook
 	public AddressBookMain() {
@@ -42,6 +42,20 @@ public class AddressBookMain {
 		}
 		System.out.println("No record found for this person");
 	}
+	public void deleteContact(){
+		System.out.println("Enter the First Name of person whose entry is to be deleted :");
+		Scanner nsc = new Scanner(System.in);
+		String personName = nsc.nextLine();
+		for (int i = 0; i < bookList.size(); i++) {
+			if (bookList.get(i).firstName == personName) {
+				bookList.remove(bookList.get(i));
+				return;
+				// Similarly other changes can be made
+			}
+		}
+		System.out.println("No record found for this person");
+		
+	}
 
 	public static void main(String args[]) {
 		System.out.println("Welcome to Address Book");
@@ -64,10 +78,9 @@ public class AddressBookMain {
 			String phoneNumber = sc.nextLine();
 			System.out.println("Enter your Email Address :");
 			String emailId = sc.nextLine();
-			// AddressBookMain newBoook = new
-			// AddressBookMain(fName,lName,cit,sta,phoneNo,email);
 			book.addNewContact(firstName, lastName, city, state, phoneNumber, emailId);
 		}
 		book.changeDetails();
+		book.deleteContact();
 	}
 }
