@@ -84,13 +84,27 @@ public class AddressBookMain {
 	/*
 	public static void main(String args[]) {
 		displayMessage();
-		//AddressBookMain book = new AddressBookMain();
-		//book.changeDetails();
-		//book.deleteContact();
+		AddressBookMain book = new AddressBookMain();
+		book.changeDetails();
+		book.deleteContact();
 	}
 	*/
 
 	public void displayMessage() {
 		System.out.println("Welcome to Address Book");
+	}
+
+	public void search(String fName) {
+		boolean flag =  false;
+		for(int i = 0; i<this.bookList.size();i++) {
+			if(this.bookList.get(i).fullName.equalsIgnoreCase(fName)) {
+				System.out.println(fName+" lives in city :"+this.bookList.get(i).city+" and state :"+this.bookList.get(i).state);
+				flag = true;
+			}
+		}
+		if(!flag) {
+			System.out.println("No matches found for "+fName+" in "+this.bookName+" address book");
+		}
+		
 	}
 }

@@ -19,9 +19,20 @@ public class MainClass {
 		addressBookMap = new HashMap<>();
 		createAddressBookList();
 	}
+	
+	public void search() {
+		System.out.println("Enter the full name of the person to be searched");
+		Scanner sc = new Scanner(System.in);
+		String fName = sc.nextLine();
+		for(Map.Entry m:addressBookMap.entrySet()) {
+			System.out.println("Searching in "+m.getKey()+" address book :");
+			((AddressBookMain) m.getValue()).search(fName);
+		}
+	}
 	public static void main(String args[]) {
 		
 		MainClass object = new MainClass();
+		object.search();
 	}
 
 	public void createAddressBookList() {
