@@ -3,66 +3,23 @@
  * 
  */
 import java.util.*;
-
 /**
  * @author prashant
  *
  */
 public class AddressBookMain {
 
+	private String bookName;
 	// list to store contacts
 	private LinkedList<Contact> bookList;
-	//private Map<String, Contact> bookMap;
 
 	// constructor of addressbook
-	public AddressBookMain() {
-		bookList = new LinkedList<>();
-		// bookMap = new HashMap<>();
-	}
-
-	// function to add new contacts to the book
-	public void addNewContact(String firstName, String lastName, String city, String state, String phoneNumber,
-			String emailId) {
-		Contact contactX = new Contact(firstName, lastName, city, state, phoneNumber, emailId);
-		bookList.add(contactX);
-		// bookMap.put(first, value)
-	}
-
-	public void changeDetails() {
-		System.out.println("Enter the First Name of person whose details are to be changed :");
-		Scanner nsc = new Scanner(System.in);
-		String personName = nsc.nextLine();
-		for (int i = 0; i < bookList.size(); i++) {
-			if (bookList.get(i).firstName == personName) {
-				System.out.println("Enter new city :");
-				bookList.get(i).city = nsc.nextLine();
-				return;
-				// Similarly other changes can be made
-			}
-		}
-		System.out.println("No record found for this person");
-	}
-	public void deleteContact(){
-		System.out.println("Enter the First Name of person whose entry is to be deleted :");
-		Scanner nsc = new Scanner(System.in);
-		String personName = nsc.nextLine();
-		for (int i = 0; i < bookList.size(); i++) {
-			if (bookList.get(i).firstName == personName) {
-				bookList.remove(bookList.get(i));
-				return;
-				// Similarly other changes can be made
-			}
-		}
-		System.out.println("No record found for this person");
-		
-	}
-
-	public static void main(String args[]) {
-		System.out.println("Welcome to Address Book");
-		System.out.println("Enter number of person in address Book");
+	public AddressBookMain(String bookName) {
+		this.bookList = new LinkedList<>();
+		this.bookName = bookName;
 		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter number of person in address Book");
 		int n = sc.nextInt();
-		AddressBookMain book = new AddressBookMain();
 		sc.nextLine();
 		while (n > 0) {
 			n--;
@@ -78,9 +35,62 @@ public class AddressBookMain {
 			String phoneNumber = sc.nextLine();
 			System.out.println("Enter your Email Address :");
 			String emailId = sc.nextLine();
-			book.addNewContact(firstName, lastName, city, state, phoneNumber, emailId);
+			this.addNewContact(firstName, lastName, city, state, phoneNumber, emailId);
 		}
-		book.changeDetails();
-		book.deleteContact();
+	}
+
+	// function to add new contacts to the book
+	public void addNewContact(String firstName, String lastName, String city, String state, String phoneNumber,
+			String emailId) {
+		Contact contactX = new Contact(firstName, lastName, city, state, phoneNumber, emailId);
+		this.bookList.add(contactX);
+		// bookMap.put(first, value)
+	}
+
+	public void changeDetails() {
+		System.out.println("Enter the Full Name of person whose details are to be changed :");
+		Scanner sc = new Scanner(System.in);
+		String name = sc.nextLine();
+		for (int i = 0; i < this.bookList.size(); i++) {
+			if (this.bookList.get(i).fullName.equalsIgnoreCase(name)) {
+				System.out.println("Enter new city :");
+				this.bookList.get(i).city = sc.nextLine();
+				System.out.println("Enter new State :");
+				this.bookList.get(i).state = sc.nextLine();
+				System.out.println("Enter new Phone Number :");
+				this.bookList.get(i).phoneNumber = sc.nextLine();
+				System.out.println("Enter new EmailId :");
+				this.bookList.get(i).emailId = sc.nextLine();
+				System.out.println("Changes made successfully");
+				return;
+			}
+		}
+		System.out.println("No record found for this person");
+	}
+	public void deleteContact(){
+		System.out.println("Enter the First Name of person whose entry is to be deleted :");
+		Scanner sc = new Scanner(System.in);
+		String name = sc.nextLine();
+		for (int i = 0; i < this.bookList.size(); i++) {
+			if (this.bookList.get(i).fullName.equalsIgnoreCase(name)) {
+				this.bookList.remove(this.bookList.get(i));
+				System.out.println("Changes made successfully");
+				return;
+			}
+		}
+		System.out.println("No record found for this person");
+		
+	}
+	/*
+	public static void main(String args[]) {
+		displayMessage();
+		//AddressBookMain book = new AddressBookMain();
+		//book.changeDetails();
+		//book.deleteContact();
+	}
+	*/
+
+	public void displayMessage() {
+		System.out.println("Welcome to Address Book");
 	}
 }

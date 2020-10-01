@@ -11,6 +11,7 @@ public class Contact {
 	// variables
 	public String firstName;
 	public String lastName;
+	public String fullName;
 	public String city;
 	public String state;
 	public String phoneNumber;
@@ -24,6 +25,7 @@ public class Contact {
 		this.state = state;
 		this.phoneNumber = phoneNumber;
 		this.emailId = emailId;
+		this.fullName = firstName +" "+ lastName;
 	}
 	
 	
