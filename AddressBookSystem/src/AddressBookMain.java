@@ -12,9 +12,13 @@ public class AddressBookMain {
 	private String bookName;
 	// list to store contacts
 	private LinkedList<Contact> bookList;
+	private Map<String,String> mapOfCityAndPerson;
+	private Map<String,String> mapOfStateAndPerson;
 
 	// constructor of addressbook
 	public AddressBookMain(String bookName) {
+		this.mapOfCityAndPerson = new  HashMap<>();
+		this.mapOfStateAndPerson = new HashMap<>();
 		this.bookList = new LinkedList<>();
 		this.bookName = bookName;
 		Scanner sc = new Scanner(System.in);
@@ -51,6 +55,8 @@ public class AddressBookMain {
 		}
 		this.bookList.add(contactX);
 		System.out.println("Contact added successfully:");
+		this.mapOfCityAndPerson.put(contactX.city, contactX.fullName);
+		this.mapOfStateAndPerson.put(contactX.state, contactX.fullName);
 		return true;
 		// bookMap.put(first, value)
 	}
@@ -114,5 +120,31 @@ public class AddressBookMain {
 			System.out.println("No matches found for "+fName+" in "+this.bookName+" address book");
 		}
 		
+	}
+
+	public void viewPersonByCity(String city) {
+		boolean flag =  false;
+		for(Map.Entry m:mapOfCityAndPerson.entrySet()) {
+			if(((String) m.getKey()).equalsIgnoreCase(city)) {
+				System.out.println(m.getValue()+" also lives in city :"+city);
+				flag = true;
+			}
+		}
+		if(!flag) {
+			System.out.println("No person lives in city : "+city+" in "+this.bookName+" address book");
+		}
+	}
+
+	public void viewPersonByState(String state) {
+		boolean flag =  false;
+		for(Map.Entry m:mapOfStateAndPerson.entrySet()) {
+			if(((String) m.getKey()).equalsIgnoreCase(state)) {
+				System.out.println(m.getValue()+" also lives in state :"+state);
+				flag = true;
+			}
+		}
+		if(!flag) {
+			System.out.println("No person lives in state : "+state+" in "+this.bookName+" address book");
+		}
 	}
 }
