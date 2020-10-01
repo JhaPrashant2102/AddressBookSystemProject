@@ -33,6 +33,28 @@ public class MainClass {
 		
 		MainClass object = new MainClass();
 		object.search();
+		object.viewPersonByCity();
+		object.viewPersonByState();
+	}
+
+	private void viewPersonByState() {
+		System.out.println("Enter the state to be searched :");
+		Scanner sc = new Scanner(System.in);
+		String state = sc.nextLine();
+		for(Map.Entry m:addressBookMap.entrySet()) {
+			System.out.println("Searching in "+m.getKey()+" address book :");
+			((AddressBookMain) m.getValue()).viewPersonByState(state);
+		}		
+	}
+
+	private void viewPersonByCity() {
+		System.out.println("Enter the city to be searched :");
+		Scanner sc = new Scanner(System.in);
+		String city = sc.nextLine();
+		for(Map.Entry m:addressBookMap.entrySet()) {
+			System.out.println("Searching in "+m.getKey()+" address book :");
+			((AddressBookMain) m.getValue()).viewPersonByCity(city);
+		}
 	}
 
 	public void createAddressBookList() {
