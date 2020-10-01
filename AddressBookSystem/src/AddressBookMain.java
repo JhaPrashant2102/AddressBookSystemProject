@@ -22,7 +22,6 @@ public class AddressBookMain {
 		int n = sc.nextInt();
 		sc.nextLine();
 		while (n > 0) {
-			n--;
 			System.out.println("Enter First Name :");
 			String firstName = sc.nextLine();
 			System.out.println("Enter Last Name :");
@@ -35,15 +34,24 @@ public class AddressBookMain {
 			String phoneNumber = sc.nextLine();
 			System.out.println("Enter your Email Address :");
 			String emailId = sc.nextLine();
-			this.addNewContact(firstName, lastName, city, state, phoneNumber, emailId);
+			boolean check = this.addNewContact(firstName, lastName, city, state, phoneNumber, emailId);
+			if(check) n--; else;
 		}
 	}
 
 	// function to add new contacts to the book
-	public void addNewContact(String firstName, String lastName, String city, String state, String phoneNumber,
+	public boolean addNewContact(String firstName, String lastName, String city, String state, String phoneNumber,
 			String emailId) {
 		Contact contactX = new Contact(firstName, lastName, city, state, phoneNumber, emailId);
+		for(int i = 0 ; i<bookList.size();i++) {
+			if(this.bookList.get(i).fullName.equalsIgnoreCase(firstName+" "+lastName)) {
+				System.out.println("Contact with this name already exists! \nPlease try some other name");
+				return false;
+			}
+		}
 		this.bookList.add(contactX);
+		System.out.println("Contact added successfully:");
+		return true;
 		// bookMap.put(first, value)
 	}
 
