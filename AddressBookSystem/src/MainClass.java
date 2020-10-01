@@ -26,7 +26,7 @@ public class MainClass {
 		String fName = sc.nextLine();
 		for(Map.Entry m:addressBookMap.entrySet()) {
 			System.out.println("Searching in "+m.getKey()+" address book :");
-			((AddressBookMain) m.getValue()).search(fName);
+			boolean check = ((AddressBookMain) m.getValue()).search(fName);
 		}
 	}
 	public static void main(String args[]) {
@@ -35,6 +35,17 @@ public class MainClass {
 		object.search();
 		object.viewPersonByCity();
 		object.viewPersonByState();
+		object.getNumberOfContactPerson();
+	}
+
+	private void getNumberOfContactPerson() {
+		System.out.println("Enter the full name of person for whom help is required");
+		Scanner sc = new Scanner(System.in);
+		String personName = sc.nextLine();
+		for(Map.Entry m:addressBookMap.entrySet()) {
+			System.out.println("Searching in "+m.getKey()+" address book :");
+			((AddressBookMain) m.getValue()).getNumberofContactPerson(personName);
+		}
 	}
 
 	private void viewPersonByState() {
