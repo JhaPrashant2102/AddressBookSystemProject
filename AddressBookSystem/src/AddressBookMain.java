@@ -47,6 +47,8 @@ public class AddressBookMain {
 				;
 		}
 		this.sortContactNames();
+		this.sortByCity();
+		this.sortByState();
 	}
 
 	private void sortContactNames() {
@@ -55,6 +57,16 @@ public class AddressBookMain {
 		sortedList.stream().forEach(n->{
 			System.out.println("Contact name is : "+n.getFullName());
 		});
+	}
+	
+	private void sortByCity() {
+		List<Contact> sortedList = this.bookList.stream().sorted((n1,n2)->n1.getCity().compareTo(n2.getCity())).collect(Collectors.toList());
+		//System.out.println("Sorted contact list is : "+sortedList);
+	}
+	
+	private void sortByState() {
+		List<Contact> sortedList = this.bookList.stream().sorted((n1,n2)->n1.getState().compareTo(n2.getState())).collect(Collectors.toList());
+		//System.out.println("Sorted contact list is : "+sortedList);
 	}
 
 	/**
