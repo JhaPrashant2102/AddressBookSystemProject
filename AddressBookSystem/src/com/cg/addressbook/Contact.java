@@ -1,3 +1,4 @@
+package com.cg.addressbook;
 /**
  * contact class for addressBook
  */
@@ -43,7 +44,7 @@ public class Contact {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	
+
 	public String getFullName() {
 		return fullName;
 	}
@@ -82,6 +83,13 @@ public class Contact {
 
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
+	}
+
+	@Override
+	public String toString() {
+		return "firstName =" + this.getFirstName() + ",lastname =" + this.getLastName() + ",city =" + this.getCity()
+				+ ",state =" + this.getState() + ",phonenumber =" + this.getPhoneNumber() + ",emailid ="
+				+ this.getEmailId();
 	}
 
 }

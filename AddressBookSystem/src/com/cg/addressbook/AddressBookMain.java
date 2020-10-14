@@ -1,16 +1,15 @@
-
-/**
- * 
- */
+package com.cg.addressbook;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * @author prashant
- *
  */
 public class AddressBookMain {
 
+	public enum IOAddressBookService {
+		CONSOLE_IO, FILE_IO, DB_IO, REST_IO
+	}
 	private String bookName;
 	// list to store contacts
 	private List<Contact> bookList;
@@ -211,5 +210,29 @@ public class AddressBookMain {
 			System.out.println("number of people in same city as " + personName + " is/are " + c1);
 		}
 		// else case not required
+	}
+	public void writeAddressBookData(IOAddressBookService ioService) {
+		if(ioService.equals(IOAddressBookService.FILE_IO)) {
+			new AddressBookFileIOService().writeData(this.bookList,this.bookName);
+			/*
+			List<Contact> contactList = new ArrayList<>();
+			contactList.add(new Contact("Prashant", "Jha", "Faridabad", "Haryana", "9717064819", "pra@gmail.com"));
+			contactList.add(new Contact("Pra", "Jha", "fbd", "Har", "97170", "pra@ail.com"));
+			new AddressBookFileIOService().writeData(contactList,this.bookName);
+			*/
+		}
+	}
+
+	public void readAddressBookData(IOAddressBookService ioService) {
+		if(ioService.equals(IOAddressBookService.FILE_IO)) {
+			List<Contact> contactList = new AddressBookFileIOService().readData(this.bookName);
+			System.out.println(contactList);
+		}
+	}
+	
+	public void printData(IOAddressBookService ioService) {
+		if(ioService.equals(IOAddressBookService.FILE_IO)) {
+			new AddressBookFileIOService().printData(this.bookName);
+		}
 	}
 }

@@ -1,13 +1,11 @@
+package com.cg.addressbook;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import com.cg.addressbook.AddressBookMain.IOAddressBookService;
 /**
- * 
- */
-
-/**
- * @author prashant
+ * @author Prashant
  *
  */
 public class MainClass {
@@ -18,7 +16,19 @@ public class MainClass {
 		addressBookMap = new HashMap<>();
 		createAddressBookList();
 	}
-
+	
+	public void createAddressBookList() {
+		System.out.println("Enter number of Address Book");
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		sc.nextLine();
+		for (int i = 0; i < n; i++) {
+			System.out.println("Enter the name of your address book :");
+			String addressBookName = sc.nextLine();
+			addressBookMap.put(addressBookName, new AddressBookMain(addressBookName));
+		}
+	}
+	
 	public void search() {
 		System.out.println("Enter the full name of the person to be searched");
 		Scanner sc = new Scanner(System.in);
@@ -31,12 +41,32 @@ public class MainClass {
 
 	public static void main(String args[]) {
 
-		MainClass object = new MainClass();
-		object.search();
-		object.viewPersonByCity();
-		object.viewPersonByState();
-		object.getNumberOfContactPerson();
-		
+		MainClass addressDiary = new MainClass();
+		//addressDiary.search();
+		//addressDiary.viewPersonByCity();
+		//addressDiary.viewPersonByState();
+		//addressDiary.getNumberOfContactPerson();
+		addressDiary.writeAddressBookDataIntoFile();
+		addressDiary.readFileDataAndCreateNewAddressBook();
+		addressDiary.printFileData();
+	}
+
+	private void printFileData() {
+		for(Map.Entry m : addressBookMap.entrySet()) {
+			((AddressBookMain) m.getValue()).printData(IOAddressBookService.FILE_IO);
+		}
+	}
+
+	private void readFileDataAndCreateNewAddressBook() {
+		for(Map.Entry m : addressBookMap.entrySet()) {
+			((AddressBookMain) m.getValue()).readAddressBookData(IOAddressBookService.FILE_IO);
+		}
+	}
+
+	private void writeAddressBookDataIntoFile() {
+		for(Map.Entry m : addressBookMap.entrySet()) {
+			((AddressBookMain) m.getValue()).writeAddressBookData(IOAddressBookService.FILE_IO);
+		}
 	}
 
 	private void getNumberOfContactPerson() {
@@ -69,16 +99,5 @@ public class MainClass {
 		}
 	}
 
-	public void createAddressBookList() {
-		System.out.println("Enter number of Address Book");
-		Scanner sc = new Scanner(System.in);
-		int n = sc.nextInt();
-		sc.nextLine();
-		for (int i = 0; i < n; i++) {
-			System.out.println("Enter the name of your address book :");
-			String addressBookName = sc.nextLine();
-			addressBookMap.put(addressBookName, new AddressBookMain(addressBookName));
-		}
 
-	}
 }

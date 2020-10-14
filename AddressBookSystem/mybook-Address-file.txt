@@ -1,0 +1,2 @@
+firstName =prashant,lastname =jha,city =faridabad,state =harayana,phonenumber =987,emailid =jh@prashant
+firstName =jha,lastname =prashant,city =delhi,state =delhi,phonenumber =98765,emailid =prash
