@@ -1,6 +1,10 @@
 package com.cg.addressbook;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 /**
  * @author prashant
@@ -233,6 +237,19 @@ public class AddressBookMain {
 	public void printData(IOAddressBookService ioService) {
 		if(ioService.equals(IOAddressBookService.FILE_IO)) {
 			new AddressBookFileIOService().printData(this.bookName);
+		}
+	}
+
+	public void writeAddressBookIntoCSVFile(IOAddressBookService ioService) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
+		if(ioService.equals(IOAddressBookService.FILE_IO)) {
+			new AddressBookFileIOCSVService().writeData(this.bookList,this.bookName);
+		}
+	}
+
+	public void readAddressBookCSVFile(IOAddressBookService ioService) throws IOException {
+		if(ioService.equals(IOAddressBookService.FILE_IO)) {
+			List<Contact> contactList = new AddressBookFileIOCSVService().readData(this.bookName);
+			System.out.println(contactList);
 		}
 	}
 }
