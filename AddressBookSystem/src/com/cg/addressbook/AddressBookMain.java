@@ -252,4 +252,10 @@ public class AddressBookMain {
 			System.out.println(contactList);
 		}
 	}
+
+	public void writeAddressBookIntoJSONFile(IOAddressBookService ioService) throws IOException {
+		if(ioService.equals(IOAddressBookService.FILE_IO)) {
+			new AddressBookFileIOCSVService().writeFromCsvWriteToJson(this.bookName);
+		}
+	}
 }
