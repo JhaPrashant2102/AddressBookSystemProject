@@ -1,9 +1,12 @@
 package com.cg.addressbook;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 import com.cg.addressbook.AddressBookMain.IOAddressBookService;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 /**
  * @author Prashant
  *
@@ -39,16 +42,30 @@ public class MainClass {
 		}
 	}
 
-	public static void main(String args[]) {
+	public static void main(String args[]) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
 
 		MainClass addressDiary = new MainClass();
 		//addressDiary.search();
 		//addressDiary.viewPersonByCity();
 		//addressDiary.viewPersonByState();
 		//addressDiary.getNumberOfContactPerson();
-		addressDiary.writeAddressBookDataIntoFile();
-		addressDiary.readFileDataAndCreateNewAddressBook();
-		addressDiary.printFileData();
+		//addressDiary.writeAddressBookDataIntoFile();
+		//addressDiary.readFileDataAndCreateNewAddressBook();
+		//addressDiary.printFileData();
+		addressDiary.writeAddressBookDataIntoCSVFile();
+		addressDiary.readCSVFileDataAndCreateNewAddressBook();
+	}
+
+	private void readCSVFileDataAndCreateNewAddressBook() throws IOException {
+		for(Map.Entry m : addressBookMap.entrySet()) {
+			((AddressBookMain) m.getValue()).readAddressBookCSVFile(IOAddressBookService.FILE_IO);
+		}
+	}
+
+	private void writeAddressBookDataIntoCSVFile() throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
+		for(Map.Entry m : addressBookMap.entrySet()) {
+			((AddressBookMain) m.getValue()).writeAddressBookIntoCSVFile(IOAddressBookService.FILE_IO);
+		}
 	}
 
 	private void printFileData() {

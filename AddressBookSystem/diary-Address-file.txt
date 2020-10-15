@@ -1,1 +1,0 @@
-firstName =prashant,lastname =jha,city =faridabad,state =harayana,phonenumber =98765432,emailid =jha@gmail.com
