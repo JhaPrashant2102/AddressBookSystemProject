@@ -1,6 +1,7 @@
 package com.cg.addressbook;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,7 +12,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.CsvToBean;
@@ -79,6 +86,35 @@ public class AddressBookFileIOCSVService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void writeDataIntoJsonFile(List<Contact> bookList, String bookName) {
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		String json = gson.toJson(bookList);
+		System.out.println(json);
+		FileWriter file;
+		try {
+			file = new FileWriter(bookName+"-"+ADDRESS_BOOK_JSON_FILE);
+			file.write(json);
+			file.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
+		
+	}
+
+	public void readDataFromJsonFile(String bookName) throws ParseException {
+		JSONParser parser = new JSONParser();
+		try {
+			Object obj = parser.parse(new FileReader(bookName+"-"+ADDRESS_BOOK_JSON_FILE));
+			//JSONObject jsonObject = (JSONObject) obj;
+			JSONArray contactList = (JSONArray) obj;
+			//System.out.println(contactList);
+		}catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 
 }

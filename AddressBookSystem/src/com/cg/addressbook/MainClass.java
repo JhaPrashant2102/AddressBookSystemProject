@@ -54,7 +54,14 @@ public class MainClass {
 		//addressDiary.printFileData();
 		addressDiary.writeAddressBookDataIntoCSVFile();
 		addressDiary.readCSVFileDataAndCreateNewAddressBook();
-		addressDiary.writeAddressBookDataIntoJSONFile();
+		//addressDiary.writeAddressBookDataIntoJSONFile();
+		addressDiary.writeIntoJSONFile();
+	}
+
+	private void writeIntoJSONFile() {
+		for(Map.Entry m : addressBookMap.entrySet()) {
+			((AddressBookMain) m.getValue()).writeIntoJSONFile(IOAddressBookService.FILE_IO);
+		}
 	}
 
 	private void writeAddressBookDataIntoJSONFile() throws IOException {

@@ -258,4 +258,10 @@ public class AddressBookMain {
 			new AddressBookFileIOCSVService().writeFromCsvWriteToJson(this.bookName);
 		}
 	}
+
+	public void writeIntoJSONFile(IOAddressBookService ioService) {
+		if(ioService.equals(IOAddressBookService.FILE_IO)) {
+			new AddressBookFileIOCSVService().writeDataIntoJsonFile(this.bookList,this.bookName);
+		}
+	}
 }
