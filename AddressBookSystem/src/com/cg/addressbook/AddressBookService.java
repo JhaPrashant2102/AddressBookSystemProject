@@ -3,6 +3,7 @@ package com.cg.addressbook;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class AddressBookService {
 	
 	
@@ -29,6 +30,13 @@ public class AddressBookService {
 			return contactList;
 		}
 		return null;
+	}
+
+	public long countEntries(IOService ioService) {
+		if (ioService.equals(IOService.REST_IO)) {
+			return this.contactList.size();
+		}
+		return this.contactList.size();
 	}
 	
 }

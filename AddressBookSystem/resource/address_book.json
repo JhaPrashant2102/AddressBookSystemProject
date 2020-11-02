@@ -1,0 +1,20 @@
+{
+  "Contacts":[
+    {
+      "firstName": "Jeff",
+      "lastName": "Bezoz",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "phoneNumber": "987654321",
+	  "emailId":"jeffbezoz@amazon.com"
+    },
+	{
+      "firstName": "Bill",
+      "lastName": "Gates",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "phoneNumber": "987654321",
+	  "emailId":"billgates@microsoft.com"
+    }
+  ]
+}
