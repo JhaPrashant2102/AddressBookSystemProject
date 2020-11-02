@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.json.simple.parser.ParseException;
+
 import com.cg.addressbook.AddressBookMain.IOAddressBookService;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
@@ -42,7 +44,7 @@ public class MainClass {
 		}
 	}
 
-	public static void main(String args[]) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
+	public static void main(String args[]) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException, ParseException {
 
 		MainClass addressDiary = new MainClass();
 		//addressDiary.search();
@@ -56,6 +58,13 @@ public class MainClass {
 		addressDiary.readCSVFileDataAndCreateNewAddressBook();
 		//addressDiary.writeAddressBookDataIntoJSONFile();
 		addressDiary.writeIntoJSONFile();
+		addressDiary.readFromJSONFile();
+	}
+
+	private void readFromJSONFile() throws ParseException {
+		for(Map.Entry m : addressBookMap.entrySet()) {
+			((AddressBookMain) m.getValue()).readfromJsonFile(IOAddressBookService.FILE_IO);
+		}
 	}
 
 	private void writeIntoJSONFile() {

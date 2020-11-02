@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.json.simple.parser.ParseException;
+
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
@@ -262,6 +264,12 @@ public class AddressBookMain {
 	public void writeIntoJSONFile(IOAddressBookService ioService) {
 		if(ioService.equals(IOAddressBookService.FILE_IO)) {
 			new AddressBookFileIOCSVService().writeDataIntoJsonFile(this.bookList,this.bookName);
+		}
+	}
+
+	public void readfromJsonFile(IOAddressBookService ioService) throws ParseException {
+		if(ioService.equals(IOAddressBookService.FILE_IO)) {
+			new AddressBookFileIOCSVService().readDataFromJsonFile(this.bookName);
 		}
 	}
 }
