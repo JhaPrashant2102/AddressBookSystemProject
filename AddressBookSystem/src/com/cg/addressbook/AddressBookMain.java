@@ -21,8 +21,14 @@ public class AddressBookMain {
 	private List<Contact> bookList;
 	private Map<String, String> mapOfCityAndPerson;
 	private Map<String, String> mapOfStateAndPerson;
+	
+	//default constructor
+	public AddressBookMain() {
+		this.bookList = new ArrayList<>();
+	}
 
-	// constructor of addressbook
+
+	//parametrized constructor of addressbook
 	public AddressBookMain(String bookName) {
 		this.mapOfCityAndPerson = new HashMap<>();
 		this.mapOfStateAndPerson = new HashMap<>();
