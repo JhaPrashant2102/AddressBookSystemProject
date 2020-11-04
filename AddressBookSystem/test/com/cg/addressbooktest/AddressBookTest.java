@@ -7,6 +7,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +17,6 @@ import com.cg.addressbook.AddressBookService;
 import com.cg.addressbook.AddressBookService.IOService;
 import com.cg.addressbook.Contact;
 import com.google.gson.Gson;
-import com.practice.fileIO.EmployeePayRollData;
-import com.practice.fileIO.EmployeePayrollService;
-
 class AddressBookTest {
 
 	// UC16
@@ -96,6 +94,53 @@ class AddressBookTest {
 		Response response = RestAssured.get("/address_book");
 		Contact[] arrayOfContacts = new Gson().fromJson(response.asString(), Contact[].class);
 		return arrayOfContacts;
+	}
+
+	// JsonServerRestAssured UC23
+	@Test
+	public void givenMultipleContacts_WhenAddedToJSonServer_ShouldSyncWithApplicationMemory() {
+		Contact[] arrayOfContacts = getContactList();
+		AddressBookService addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));
+		Contact[] arrOfContacts = {
+				new Contact("Jeff", "Bezos", "Bangalore", "Karnataka", "9765432100", "jeff@amazon.com",
+						LocalDate.now()),
+				new Contact("Mukesh", "Ambani", "Mumbai", "Maharashtra", "9766432100", "mukesh@reliance.com",
+						LocalDate.now()) };
+		addContactsToJsonServer(Arrays.asList(arrOfContacts));
+		arrayOfContacts = getContactList();
+		addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));
+		assertEquals(7, addressBookService.countEntries(IOService.REST_IO));
+	}
+
+	private void addContactsToJsonServer(List<Contact> contactList) {
+		Map<String, Boolean> statusCheck = new HashMap<String, Boolean>();
+		contactList.forEach(contact -> {
+			Runnable task = () -> {
+				statusCheck.put(contact.getFirstName(), false);
+				System.out.println("Contact being added:(threads) " + Thread.currentThread().getName());
+				this.addContactToJSONServer(contact);
+				statusCheck.put(contact.getFirstName(), true);
+				System.out.println("Contact added: (threads)" + Thread.currentThread().getName());
+			};
+			Thread thread = new Thread(task, contact.getFirstName());
+			thread.start();
+		});
+		while (statusCheck.containsValue(false)) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void addContactToJSONServer(Contact contact) {
+		String json = new Gson().toJson(contact);
+		System.out.println(json);
+		RequestSpecification request = RestAssured.given();
+		request.header("Content-Type","application/json");
+		request.body(json);
+		return request.post("/contacts");
 	}
 
 }
