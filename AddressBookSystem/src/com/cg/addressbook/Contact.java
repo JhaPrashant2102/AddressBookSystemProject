@@ -42,6 +42,14 @@ public class Contact {
 		return firstName;
 	}
 
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}

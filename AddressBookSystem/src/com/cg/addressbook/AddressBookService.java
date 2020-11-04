@@ -2,6 +2,7 @@ package com.cg.addressbook;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,19 +42,19 @@ public class AddressBookService {
 
 	public void updateContactPhoneNumber(String name, String phoneNumber, IOService ioService) {
 		if (ioService.equals(IOService.DB_IO)) {
-			int result = addressBookDB_IOService.updateContactDetails(name,phoneNumber);
+			int result = addressBookDB_IOService.updateContactDetails(name, phoneNumber);
 			if (result == 0)
 				return;
 			Contact contact = this.getContactDetails(name);
 			if (contact != null)
-				contact.setPhoneNumber(phoneNumber);;
+				contact.setPhoneNumber(phoneNumber);
+			;
 		}
 	}
 
 	private Contact getContactDetails(String name) {
-		Contact contact = this.contactList.stream()
-				.filter(contactData -> contactData.getFirstName().equals(name)).findFirst()
-				.orElse(null);
+		Contact contact = this.contactList.stream().filter(contactData -> contactData.getFirstName().equals(name))
+				.findFirst().orElse(null);
 		return contact;
 	}
 
@@ -75,9 +76,36 @@ public class AddressBookService {
 		return null;
 	}
 
-	public void addContactToAddressBook(String firstName, String lastName, String city, String state, String phoneNumber,
-			String email, LocalDate startDate) {
-		this.contactList.add(addressBookDB_IOService.addEmployeeToPayroll(firstName,lastName,city,state,phoneNumber,email,startDate));
+	public void addContactToAddressBook(String firstName, String lastName, String city, String state,
+			String phoneNumber, String email, LocalDate startDate) {
+		this.contactList.add(addressBookDB_IOService.addEmployeeToPayroll(firstName, lastName, city, state, phoneNumber,
+				email, startDate));
+	}
+
+	public void addContactsToAddressBook(List<Contact> contactList) {
+		Map<Integer, Boolean> employeeAdditionStatus = new HashMap<Integer, Boolean>();
+		contactList.forEach(contactDetails -> {
+			Runnable task = () -> {
+				employeeAdditionStatus.put(contactDetails.hashCode(), false);
+				System.out.println("Employee being added : " + Thread.currentThread().getName());
+				this.addContactToAddressBook(contactDetails.getFirstName(), contactDetails.getLastName(),
+						contactDetails.getCity(), contactDetails.getState(), contactDetails.getPhoneNumber(),
+						contactDetails.getEmailId(),contactDetails.getStartDate());
+				employeeAdditionStatus.put(contactDetails.hashCode(), true);
+				System.out.println("Employee Added: " + Thread.currentThread().getName());
+			};
+			Thread thread = new Thread(task, contactDetails.getFirstName());
+			thread.start();
+		});
+		// while loop is needed to check whether the thread gets completed or not
+		while (employeeAdditionStatus.containsValue(false)) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println(contactList);
 	}
 
 }

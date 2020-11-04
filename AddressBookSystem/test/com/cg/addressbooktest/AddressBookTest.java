@@ -3,6 +3,8 @@ package com.cg.addressbooktest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -12,9 +14,10 @@ import org.junit.Test;
 
 import com.cg.addressbook.AddressBookService;
 import com.cg.addressbook.AddressBookService.IOService;
-import com.google.gson.Gson;
 import com.cg.addressbook.Contact;
-import org.junit.Before;
+import com.google.gson.Gson;
+import com.practice.fileIO.EmployeePayRollData;
+import com.practice.fileIO.EmployeePayrollService;
 
 class AddressBookTest {
 
@@ -61,11 +64,25 @@ class AddressBookTest {
 	public void givenNewContactWhenAddedShouldSyncWithDB() {
 		AddressBookService addressBookService = new AddressBookService();
 		List<Contact> contactList = addressBookService.readData(IOService.DB_IO);
-		addressBookService.addContactToAddressBook("Mark","Brown","City 4", "Florida","9087554654","mark@gmail.com",LocalDate.now());
+		addressBookService.addContactToAddressBook("Mark", "Brown", "City 4", "Florida", "9087554654", "mark@gmail.com",
+				LocalDate.now());
 		boolean result = addressBookService.checkContactInSyncWithDB("Mark");
 		assertTrue(result);
 	}
-/*
+
+	// UC21
+	public void givenMultipleContactsWhenAddedToDBShouldSyncWithDB() {
+		Contact[] contactList = {
+				new Contact("Jeff", "Bezos", "Bangalore", "Karnataka", "9765432100", "jeff@amazon.com",
+						LocalDate.now()),
+				new Contact("Mukesh", "Ambani", "Mumbai", "Maharashtra", "9766432100", "mukesh@reliance.com",
+						LocalDate.now()) };
+		AddressBookService addressBookService = new AddressBookService();
+		addressBookService.readData(IOService.DB_IO);
+		addressBookService.addContactsToAddressBook(Arrays.asList(contactList));
+		assertEquals(7, addressBookService.countEntries(IOService.DB_IO));
+	}
+
 	// JsonServerRestAssured UC22
 	@Test
 	public void givenEmployeeDataInJsonServer_whenRetrieved_shouldMatchTheCount() {
@@ -80,5 +97,5 @@ class AddressBookTest {
 		Contact[] arrayOfContacts = new Gson().fromJson(response.asString(), Contact[].class);
 		return arrayOfContacts;
 	}
-	*/
+
 }
