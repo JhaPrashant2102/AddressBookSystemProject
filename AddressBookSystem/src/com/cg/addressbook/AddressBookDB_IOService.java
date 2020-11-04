@@ -9,13 +9,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class AddressBookDB_IOService {
 	
 	enum StatementType {
 		PREPARED_STATEMENT, STATEMENT;
 	}
 
-	private PreparedStatement employeePayrollDataStatement;
+	private PreparedStatement addressBookDataStatement;
 	private int connectionCounter = 0;
 	private static AddressBookDB_IOService addressBookDB_IOService;
 
@@ -36,8 +37,6 @@ public class AddressBookDB_IOService {
 			Statement statement = connection.createStatement();
 			ResultSet result = statement.executeQuery(sql);
 			ContactList = this.getAddressBookData(result);
-			connection.close();
-			// connection needs to be closed - notes
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -48,7 +47,6 @@ public class AddressBookDB_IOService {
 		List<Contact> contactList = new ArrayList<>();
 		try {
 			while (resultSet.next()) {
-				//TODO
 				String firstName = resultSet.getString("first_name");
 				String lastName = resultSet.getString("last_name");
 				String city = resultSet.getString("city");
@@ -65,9 +63,9 @@ public class AddressBookDB_IOService {
 
 	private Connection getConnection() throws SQLException {
 		connectionCounter++;
-		String jdbcURL = "jdbc:mysql://localhost:3306/address_book_service?SSL=false";
-		String userName = "root";
-		String password = "root";
+		final String jdbcURL = "jdbc:mysql://localhost:3306/address_book_service?SSL=false";
+		final String userName = "root";
+		final String password = "root";
 		Connection connection;
 		System.out.println("Processing Thread: " + Thread.currentThread().getName() + "Connecting to database with Id:"
 				+ connectionCounter);
@@ -75,6 +73,44 @@ public class AddressBookDB_IOService {
 		System.out.println("Processing Thread: " + Thread.currentThread().getName() + " Id: " + connectionCounter
 				+ " Connection is successful!!!   " + connection);
 		return connection;
+	}
+
+	public int updateEmployeeData(String name, String phoneNumber) {
+		try (Connection connection = this.getConnection()) {
+			String sql = "update address_book set phone_number = ? where name = ?;";
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, name);
+			preparedStatement.setString(2, phoneNumber);
+			return preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public List<Contact> getContactData(String name) {
+		List<Contact> contactList = null;
+		if (this.addressBookDataStatement == null) {
+			this.prepareStatementForContactData();
+		}
+		try {
+			addressBookDataStatement.setString(1, name);
+			ResultSet resultSet = addressBookDataStatement.executeQuery();
+			contactList = this.getAddressBookData(resultSet);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return contactList;
+	}
+
+	private void prepareStatementForContactData() {
+		try {
+			Connection connection = this.getConnection();
+			String sql = "Select * from address_book where name = ?;";
+			addressBookDataStatement = connection.prepareStatement(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
