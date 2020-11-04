@@ -17,6 +17,7 @@ import com.cg.addressbook.AddressBookService;
 import com.cg.addressbook.AddressBookService.IOService;
 import com.cg.addressbook.Contact;
 import com.google.gson.Gson;
+
 class AddressBookTest {
 
 	// UC16
@@ -96,6 +97,23 @@ class AddressBookTest {
 		return arrayOfContacts;
 	}
 
+	// JsonServerRestAssured UC24
+	@Test
+	public void givenUpdatedContactDataContactData_ShouldMatch200Response() {
+		Contact[] arrayOfContacts = getContactList();
+		AddressBookService addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));
+		addressBookService.updateContactPhoneNumber("Jeff","9536987045", IOService.REST_IO);
+		Contact contact = addressBookService.getContactDetails("Jeff");
+		String json = new Gson().toJson(contact);
+		System.out.println(json);
+		RequestSpecification request = RestAssured.given();
+		request.header("Content-Type", "application/json");
+		request.body(json);
+		Response response = request.put("/contacts/" + contact.getFirstName());
+		int statusCode = response.getStatusCode();
+		assertEquals(200, statusCode);
+	}
+
 	// JsonServerRestAssured UC23
 	@Test
 	public void givenMultipleContacts_WhenAddedToJSonServer_ShouldSyncWithApplicationMemory() {
@@ -138,7 +156,7 @@ class AddressBookTest {
 		String json = new Gson().toJson(contact);
 		System.out.println(json);
 		RequestSpecification request = RestAssured.given();
-		request.header("Content-Type","application/json");
+		request.header("Content-Type", "application/json");
 		request.body(json);
 		return request.post("/contacts");
 	}
