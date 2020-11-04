@@ -1,18 +1,20 @@
 package com.cg.addressbook;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class AddressBookDB_IOService {
-	
+
 	enum StatementType {
 		PREPARED_STATEMENT, STATEMENT;
 	}
@@ -34,7 +36,7 @@ public class AddressBookDB_IOService {
 	public List<Contact> readData() {
 		String sql = "select * from address_book;";
 		List<Contact> ContactList = new ArrayList<>();
-		try(Connection connection = this.getConnection()) {
+		try (Connection connection = this.getConnection()) {
 			Statement statement = connection.createStatement();
 			ResultSet result = statement.executeQuery(sql);
 			ContactList = this.getAddressBookData(result);
@@ -114,7 +116,7 @@ public class AddressBookDB_IOService {
 		}
 	}
 
-	public Map<String,Integer> readCity() {
+	public Map<String, Integer> readCity() {
 		String sql = "select city, count(city) as count_of_city from address_book;";
 		Map<String, Integer> countOfCityMap = new HashMap<>();
 		try (Connection connection = this.getConnection()) {
@@ -143,6 +145,28 @@ public class AddressBookDB_IOService {
 		}
 
 		return contactList;
+	}
+
+	public Contact addEmployeeToPayroll(String firstName, String lastName, String city, String state,
+			String phoneNumber, String email, LocalDate startDate) {
+		int contactId = -1;
+		Contact contact = null;
+		String sql = String.format(
+				"insert into address_book (first_name,last_name,city,state,phone_number,email_id,start_date) values ('%s','%s','%s','%s','%s','%s','%s')",
+				firstName, lastName,city,state,phoneNumber,email,Date.valueOf(startDate));
+		try (Connection connection = this.getConnection()) {
+			Statement statement = connection.createStatement();
+			int rowAffected = statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+			if (rowAffected == 1) {
+				ResultSet resultSet = statement.getGeneratedKeys();
+				if (resultSet.next())
+					contactId = resultSet.getInt(1);
+			}
+			contact = new Contact(firstName,lastName,city,state,phoneNumber,email, startDate);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return contact;
 	}
 
 }
