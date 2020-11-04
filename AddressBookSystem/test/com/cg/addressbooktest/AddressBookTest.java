@@ -54,7 +54,7 @@ class AddressBookTest {
 		Map<String, Integer> cityCount = addressBookService.readCity(IOService.DB_IO);
 		assertEquals((Integer)2,cityCount.get("California"));
 	}
-
+/*
 	// JsonServerRestAssured UC22
 	@Test
 	public void givenEmployeeDataInJsonServer_whenRetrieved_shouldMatchTheCount() {
@@ -69,4 +69,5 @@ class AddressBookTest {
 		Contact[] arrayOfContacts = new Gson().fromJson(response.asString(), Contact[].class);
 		return arrayOfContacts;
 	}
+	*/
 }
