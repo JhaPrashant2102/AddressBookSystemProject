@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class AddressBookDB_IOService {
 	
 	enum StatementType {
@@ -130,6 +129,20 @@ public class AddressBookDB_IOService {
 			e.printStackTrace();
 		}
 		return countOfCityMap;
+	}
+
+	public List<Contact> getContactListInRange(String date1, String date2) {
+		String sql = String.format("select * from address_book where start between '%s' and '%s';", date1, date2);
+		List<Contact> contactList = new ArrayList<>();
+		try (Connection connection = this.getConnection()) {
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery(sql);
+			contactList = getAddressBookData(resultSet);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return contactList;
 	}
 
 }

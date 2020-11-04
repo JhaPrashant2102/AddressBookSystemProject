@@ -34,7 +34,18 @@ class AddressBookTest {
 		boolean result = addressBookService.checkContactInSyncWithDB("Bill");
 		assertTrue(result);
 	}
-
+	
+	//UC18
+	@Test
+	public void givenDateRangeWhenRetrievedShouldMatchEmployeeCount() {
+		AddressBookService addressBookService = new AddressBookService();
+		List<Contact> contactList = addressBookService.readData(IOService.DB_IO);
+		List<Contact> contactCheckList = addressBookService
+				.getContactListInStartDateRange("2012-01-01", "2019-12-12", IOService.DB_IO);
+		System.out.println(contactCheckList.size());
+		assertEquals(1, contactCheckList.size());
+	}
+	
 	// UC19
 	@Test
 	public void givenCityShouldReturnNumberOfContactsInParticularCityInDB() {

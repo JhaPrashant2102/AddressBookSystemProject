@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.practice.fileIO.EmployeePayrollService.IOService;
 public class AddressBookService {
 
 	public enum IOService {
@@ -65,6 +64,13 @@ public class AddressBookService {
 	public Map<String, Integer> readCity(IOService ioService) {
 		if (ioService.equals(IOService.DB_IO))
 			return addressBookDB_IOService.readCity();
+		return null;
+	}
+
+	public List<Contact> getContactListInStartDateRange(String date1, String date2, IOService ioService) {
+		if (ioService.equals(IOService.DB_IO)) {
+			return addressBookDB_IOService.getContactListInRange(date1, date2);
+		}
 		return null;
 	}
 
