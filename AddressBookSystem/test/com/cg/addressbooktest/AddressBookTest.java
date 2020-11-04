@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -29,9 +30,18 @@ class AddressBookTest {
 	public void givenContactForAddressBookWhenUpdatedShouldSyncWithDB() {
 		AddressBookService addressBookService = new AddressBookService();
 		List<Contact> contactList = addressBookService.readData(IOService.DB_IO);
-		addressBookService.updateContactPhoneNumber("Bill","987654321",IOService.DB_IO);
-		boolean result = addressBookService.checkContactInSyncWithDB("Terisa");
+		addressBookService.updateContactPhoneNumber("Bill", "987654321", IOService.DB_IO);
+		boolean result = addressBookService.checkContactInSyncWithDB("Bill");
 		assertTrue(result);
+	}
+
+	// UC19
+	@Test
+	public void givenCityShouldReturnNumberOfContactsInParticularCityInDB() {
+		AddressBookService addressBookService = new AddressBookService();
+		List<Contact> contactList = addressBookService.readData(IOService.DB_IO);
+		Map<String, Integer> cityCount = addressBookService.readCity(IOService.DB_IO);
+		assertEquals((Integer)2,cityCount.get("California"));
 	}
 
 	// JsonServerRestAssured UC22

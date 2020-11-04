@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class AddressBookDB_IOService {
@@ -75,7 +77,7 @@ public class AddressBookDB_IOService {
 		return connection;
 	}
 
-	public int updateEmployeeData(String name, String phoneNumber) {
+	public int updateContactDetails(String name, String phoneNumber) {
 		try (Connection connection = this.getConnection()) {
 			String sql = "update address_book set phone_number = ? where name = ?;";
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -111,6 +113,23 @@ public class AddressBookDB_IOService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public Map<String,Integer> readCity() {
+		String sql = "select city, count(city) as count_of_city from address_book;";
+		Map<String, Integer> countOfCityMap = new HashMap<>();
+		try (Connection connection = this.getConnection()) {
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery(sql);
+			while (resultSet.next()) {
+				String city = resultSet.getString("city");
+				Integer count = resultSet.getInt("count_of_city");
+				countOfCityMap.put(city, count);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return countOfCityMap;
 	}
 
 }

@@ -2,6 +2,9 @@ package com.cg.addressbook;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import com.practice.fileIO.EmployeePayrollService.IOService;
 public class AddressBookService {
 
 	public enum IOService {
@@ -38,7 +41,7 @@ public class AddressBookService {
 
 	public void updateContactPhoneNumber(String name, String phoneNumber, IOService ioService) {
 		if (ioService.equals(IOService.DB_IO)) {
-			int result = addressBookDB_IOService.updateEmployeeData(name,phoneNumber);
+			int result = addressBookDB_IOService.updateContactDetails(name,phoneNumber);
 			if (result == 0)
 				return;
 			Contact contact = this.getContactDetails(name);
@@ -57,6 +60,12 @@ public class AddressBookService {
 	public boolean checkContactInSyncWithDB(String name) {
 		List<Contact> checkList = addressBookDB_IOService.getContactData(name);
 		return checkList.get(0).equals(getContactDetails(name));
+	}
+
+	public Map<String, Integer> readCity(IOService ioService) {
+		if (ioService.equals(IOService.DB_IO))
+			return addressBookDB_IOService.readCity();
+		return null;
 	}
 
 }
