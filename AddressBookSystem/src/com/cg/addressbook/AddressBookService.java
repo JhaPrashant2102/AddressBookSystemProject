@@ -1,5 +1,6 @@
 package com.cg.addressbook;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +73,11 @@ public class AddressBookService {
 			return addressBookDB_IOService.getContactListInRange(date1, date2);
 		}
 		return null;
+	}
+
+	public void addContactToAddressBook(String firstName, String lastName, String city, String state, String phoneNumber,
+			String email, LocalDate startDate) {
+		this.contactList.add(addressBookDB_IOService.addEmployeeToPayroll(firstName,lastName,city,state,phoneNumber,email,startDate));
 	}
 
 }

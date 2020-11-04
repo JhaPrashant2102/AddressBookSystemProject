@@ -3,6 +3,8 @@ package com.cg.addressbook;
  * contact class for addressBook
  */
 
+import java.time.LocalDate;
+
 /**
  * @author prashant
  *
@@ -17,6 +19,7 @@ public class Contact {
 	private String state;
 	private String phoneNumber;
 	private String emailId;
+	private LocalDate startDate;
 
 	// Constructor
 	public Contact(String firstName, String lastName, String city, String state, String phoneNumber, String emailId) {
@@ -27,6 +30,12 @@ public class Contact {
 		this.phoneNumber = phoneNumber;
 		this.emailId = emailId;
 		this.fullName = firstName + " " + lastName;
+	}
+
+	public Contact(String firstName, String lastName, String city, String state, String phoneNumber, String emailId,
+			LocalDate startDate) {
+		this(firstName,lastName,city,state,phoneNumber,emailId);
+		this.startDate = startDate;
 	}
 
 	public String getFirstName() {
